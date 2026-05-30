@@ -16,6 +16,8 @@ ImageMagick (`magick`/`convert`), and librsvg (`rsvg-convert`). A Swift toolchai
 is needed only for **SwiftUI** output, which in practice requires **macOS**
 (SwiftUI rendering is Apple-only).
 
+### Installing Dependencies 
+
 `vtracer` is a Rust tool, so the same command works everywhere if you have
 [Rust](https://rustup.rs):
 
@@ -70,7 +72,7 @@ The skill is then model-invoked automatically when relevant, or you can run it
 explicitly:
 
 ```text
-/image-tools:image-to-vector
+/image-tools:image-to-vector convert @filename.png to a svg file.
 ```
 
 Update later with `/plugin marketplace update orange-radish-skills`.
