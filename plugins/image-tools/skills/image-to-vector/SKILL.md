@@ -38,13 +38,15 @@ If the user has provided an original SVG, design source HTML, generator script, 
 Run once at the top:
 
 ```sh
-which vtracer || echo "MISSING: vtracer - install with 'brew install vtracer' or 'cargo install vtracer'"
-which magick || which convert || echo "MISSING: ImageMagick - install with 'brew install imagemagick'"
-which rsvg-convert || echo "MISSING: librsvg (provides the rsvg-convert binary) - install with 'brew install librsvg'"
-which swift || echo "MISSING: Swift toolchain - only required for SwiftUI output"
+which vtracer || echo "MISSING: vtracer - 'cargo install vtracer' (any OS), or 'brew install vtracer' on macOS"
+which magick || which convert || echo "MISSING: ImageMagick - macOS: 'brew install imagemagick'; Debian/Ubuntu: 'sudo apt install imagemagick'; Fedora: 'sudo dnf install ImageMagick'; Windows: 'winget install ImageMagick.ImageMagick'"
+which rsvg-convert || echo "MISSING: librsvg (provides rsvg-convert) - macOS: 'brew install librsvg'; Debian/Ubuntu: 'sudo apt install librsvg2-bin'; Fedora: 'sudo dnf install librsvg2-tools'; Windows: install via MSYS2 or conda-forge"
+which swift || echo "MISSING: Swift toolchain - only required for SwiftUI output, which in practice needs macOS (SwiftUI rendering is Apple-only)"
 ```
 
-Stop and ask the user to install missing tools if a required one is absent.
+Stop and ask the user to install missing tools if a required one is absent. See
+the repository README "External dependencies" section for the full per-platform
+install commands.
 
 ## Inputs
 

@@ -10,13 +10,48 @@ standard) that were built for projects at Orange Radish.
 |---|---|---|
 | `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
 
-**External dependencies** (the skill checks for these and tells you what's
-missing): [`vtracer`](https://github.com/visioncortex/vtracer), ImageMagick
-(`magick`/`convert`), librsvg (`rsvg-convert`), and a Swift toolchain (only for
-SwiftUI output).
+**External dependencies** (the skill checks for these at startup and tells you
+what's missing): [`vtracer`](https://github.com/visioncortex/vtracer),
+ImageMagick (`magick`/`convert`), and librsvg (`rsvg-convert`). A Swift toolchain
+is needed only for **SwiftUI** output, which in practice requires **macOS**
+(SwiftUI rendering is Apple-only).
+
+`vtracer` is a Rust tool, so the same command works everywhere if you have
+[Rust](https://rustup.rs):
+
+```sh
+cargo install vtracer
+```
+
+**macOS** ([Homebrew](https://brew.sh)):
 
 ```sh
 brew install vtracer imagemagick librsvg
+```
+
+**Linux:**
+
+```sh
+# Debian / Ubuntu
+sudo apt install imagemagick librsvg2-bin   # + cargo install vtracer
+
+# Fedora
+sudo dnf install ImageMagick librsvg2-tools # + cargo install vtracer
+
+# Arch
+sudo pacman -S imagemagick librsvg          # + cargo install vtracer
+```
+
+**Windows** ([winget](https://learn.microsoft.com/windows/package-manager/) or
+[Chocolatey](https://chocolatey.org)):
+
+```powershell
+winget install ImageMagick.ImageMagick     # or: choco install imagemagick
+cargo install vtracer                       # needs Rust
+
+# rsvg-convert is not on winget/choco; install librsvg via MSYS2 or conda-forge:
+#   MSYS2:  pacman -S mingw-w64-x86_64-librsvg   (then add the MSYS2 bin dir to PATH)
+#   conda:  conda install -c conda-forge librsvg
 ```
 
 ## Install — Claude Code
