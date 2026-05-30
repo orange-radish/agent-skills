@@ -48,10 +48,15 @@ sudo pacman -S imagemagick librsvg          # + cargo install vtracer
 ```powershell
 winget install ImageMagick.ImageMagick     # or: choco install imagemagick
 cargo install vtracer                       # needs Rust
+```
 
-# rsvg-convert is not on winget/choco; install librsvg via MSYS2 or conda-forge:
-#   MSYS2:  pacman -S mingw-w64-x86_64-librsvg   (then add the MSYS2 bin dir to PATH)
-#   conda:  conda install -c conda-forge librsvg
+`rsvg-convert` is not on winget/choco; install librsvg via MSYS2 or conda-forge:
+
+```powershell
+#   MSYS2
+pacman -S mingw-w64-x86_64-librsvg  # (then add the MSYS2 bin dir to PATH)
+#   conda
+conda install -c conda-forge librsvg
 ```
 
 ## Install — Claude Code
