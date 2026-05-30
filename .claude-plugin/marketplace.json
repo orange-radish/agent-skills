@@ -1,0 +1,14 @@
+{
+  "name": "orange-radish-skills",
+  "owner": { "name": "Orange Radish" },
+  "description": "Agent Skills for Claude Code and Codex from Orange Radish.",
+  "plugins": [
+    {
+      "name": "image-tools",
+      "source": "./plugins/image-tools",
+      "description": "Convert raster images (PNG/JPG) into accurate SVG, SwiftUI, or Android VectorDrawable vectors.",
+      "category": "design",
+      "keywords": ["svg", "vector", "image", "swiftui", "android-vectordrawable"]
+    }
+  ]
+}

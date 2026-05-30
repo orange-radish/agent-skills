@@ -1,0 +1,9 @@
+{
+  "name": "image-tools",
+  "description": "Convert raster images (PNG/JPG) into pixel- and color-accurate SVG, SwiftUI, or Android VectorDrawable output. Use when converting an icon, logo, or illustration to vectors. Do not use for general raster image editing.",
+  "author": { "name": "Orange Radish" },
+  "homepage": "https://github.com/orange-radish/agent-skills",
+  "repository": "https://github.com/orange-radish/agent-skills",
+  "license": "MIT",
+  "keywords": ["svg", "vector", "image", "swiftui", "android-vectordrawable"]
+}
