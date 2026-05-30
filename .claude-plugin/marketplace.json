@@ -1,7 +1,7 @@
 {
   "name": "orange-radish-skills",
   "owner": { "name": "Orange Radish" },
-  "description": "Agent Skills for Claude Code and Codex from Orange Radish.",
+  "description": "Agent Skills for Claude Code from Orange Radish.",
   "plugins": [
     {
       "name": "image-tools",

@@ -1,8 +1,8 @@
 # Orange Radish Agent Skills
 
-A catalog of cross-platform [Agent Skills](https://agentskills.io) for
+A small catalog of cross-platform [Agent Skills](https://agentskills.io) for
 **Claude Code** and **Codex** (and any tool that supports the `SKILL.md`
-standard). Skills are authored once and distributed to both agents.
+standard) that were built for projects at Orange Radish. 
 
 ## Available skills
 
@@ -47,10 +47,13 @@ git clone https://github.com/orange-radish/agent-skills.git
 # User scope — available in every project:
 mkdir -p ~/.agents/skills
 cp -R agent-skills/plugins/image-tools/skills/image-to-vector ~/.agents/skills/
+```
 
-# Or repo scope — copy into your own project instead:
-# mkdir -p <your-project>/.agents/skills
-# cp -R agent-skills/plugins/image-tools/skills/image-to-vector <your-project>/.agents/skills/
+Or repo scope — copy into your own project instead:
+
+```sh
+mkdir -p <your-project>/.agents/skills
+cp -R agent-skills/plugins/image-tools/skills/image-to-vector <your-project>/.agents/skills/
 ```
 
 > Some older Codex builds read skills from `~/.codex/skills/` instead. See the
@@ -73,23 +76,6 @@ agent-skills/
 └── .agents/skills/                     # symlinks for Codex repo-local use
     └── image-to-vector -> ../../plugins/image-tools/skills/image-to-vector
 ```
-
-### Adding a skill
-
-1. Put it under `plugins/<plugin>/skills/<skill>/` with a `SKILL.md`. Group
-   related skills in the same plugin; use a **separate** plugin for an unrelated
-   domain so users can install only what they need.
-2. If the plugin is new, add an entry to `.claude-plugin/marketplace.json` and
-   create its `plugins/<plugin>/.claude-plugin/plugin.json`.
-3. Add a matching `.agents/skills/<skill>` symlink so the skill is usable by
-   Codex from a clone:
-   ```sh
-   ln -s ../../plugins/<plugin>/skills/<skill> .agents/skills/<skill>
-   ```
-4. `SKILL.md` frontmatter must include a portable `name` and `description`. Keep
-   the description specific and add a "do not use for…" clause — both agents use
-   it to decide when to activate the skill.
-5. Validate before pushing: `claude plugin validate .`
 
 ## License
 
