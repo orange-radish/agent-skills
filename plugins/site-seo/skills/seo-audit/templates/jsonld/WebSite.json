@@ -1,0 +1,16 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "TODO: https://example.com/#website",
+  "url": "TODO: https://example.com",
+  "name": "TODO: Site name",
+  "publisher": { "@id": "TODO: https://example.com/#organization" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "TODO: https://example.com/search?q={search_term_string} (omit this whole potentialAction block if the site has no search)"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}

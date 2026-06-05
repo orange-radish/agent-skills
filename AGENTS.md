@@ -32,7 +32,12 @@ never copies.
 
 1. Edit/add files only under `plugins/<plugin>/skills/<skill>/`.
 2. New plugin → add it to `.claude-plugin/marketplace.json` and create its
-   `plugins/<plugin>/.claude-plugin/plugin.json`.
+   `plugins/<plugin>/.claude-plugin/plugin.json`. The marketplace entry's
+   `category` must be one of Claude Code's fixed values — `database`,
+   `deployment`, `design`, `development`, `learning`, `location`, `math`,
+   `monitoring`, `productivity`, `security`, `testing`. An unrecognized
+   category makes the loader **silently drop the plugin** (it won't appear for
+   `/plugin install`), and `claude plugin validate` does **not** catch it.
 3. New skill → add a matching symlink:
    `ln -s ../../plugins/<plugin>/skills/<skill> .agents/skills/<skill>`.
 4. Validate before committing: `claude plugin validate .` and

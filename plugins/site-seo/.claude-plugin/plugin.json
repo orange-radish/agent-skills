@@ -1,0 +1,9 @@
+{
+  "name": "site-seo",
+  "description": "Audit a live website for SEO best practices and AI-agent discoverability (structured data / JSON-LD, GEO/AEO). Crawls the rendered, published HTML as ground truth, then proposes fixes with platform-specific paste instructions via Webflow and Squarespace adapters. Use to review a marketing site's SEO, meta tags, schema.org markup, robots.txt, sitemap, and AI-crawler readiness. Do not use for Core Web Vitals / performance audits, for sites requiring authenticated crawling, or to write changes back to the live site.",
+  "author": { "name": "Orange Radish" },
+  "homepage": "https://github.com/orange-radish/agent-skills",
+  "repository": "https://github.com/orange-radish/agent-skills",
+  "license": "MIT",
+  "keywords": ["seo", "structured-data", "schema-org", "json-ld", "geo", "webflow", "squarespace"]
+}
