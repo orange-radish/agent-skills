@@ -40,7 +40,7 @@ Don't prescribe a header the platform can't set; say so instead.
 3. Judge each criterion; assign P0/P1/P2 with the cited field.
 4. Propose fixes mapped to the platform adapter (what you *can* set, and where).
 
-When run via `/site-audit:audit-site`, this is the `security-auditor` sub-agent.
+When run via `/marketing:site-audit`, this is the `security-auditor` sub-agent.
 
 ## Do not
 - Do not write to the site, CMS, or MCP.

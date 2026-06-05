@@ -78,7 +78,7 @@ Two concerns, judged against `criteria/`:
 - **Classic SEO** → `criteria/seo-onpage.md` + `criteria/seo-technical.md`
 - **AI discoverability** → `criteria/structured-data.md` + `criteria/ai-discoverability.md`
 
-When invoked through the `/site-audit:audit-site` command these two concerns run
+When invoked through the `/marketing:site-audit` command these two concerns run
 as the `seo-technical-auditor` and `ai-discoverability-auditor` sub-agents in
 parallel (alongside the suite's security and link-health agents). When the skill
 is invoked directly, work through both concern sets yourself.

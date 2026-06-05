@@ -8,7 +8,7 @@ is to author and package skills correctly.
 
 - Skills live at `plugins/<plugin>/skills/<skill>/`, each with a `SKILL.md`. A
   plugin may ship **multiple peer skills** plus `commands/` and `agents/`.
-- A plugin may also have a plugin-level shared dir (e.g. `site-audit/core/` with
+- A plugin may also have a plugin-level shared dir (e.g. `marketing/core/` with
   `tools/`, `procedures/`, `adapters/`) reused by several skills/agents/commands.
   Reference it via `${CLAUDE_PLUGIN_ROOT}/core/...` from commands/agents and a
   relative `../../core/...` from a skill's `SKILL.md`. Such a plugin is meant to

@@ -1,6 +1,6 @@
 ---
-name: link-health
-description: Link & redirect health specialist for the site-audit suite. Unions the link graph from the shared inventories, runs link_check.py, and judges broken links, redirect chains, http:// links, non-canonical-host links, and likely orphans against the link-health criteria — mapping each finding back to the pages that contain the link. Returns structured findings with severities. Use as part of /site-audit:audit-site.
+name: link-health-auditor
+description: Link & redirect health specialist for the site-audit suite. Unions the link graph from the shared inventories, runs link_check.py, and judges broken links, redirect chains, http:// links, non-canonical-host links, and likely orphans against the link-health criteria — mapping each finding back to the pages that contain the link. Returns structured findings with severities. Use as part of /marketing:site-audit.
 tools: Read, Bash, Grep, Glob
 ---
 

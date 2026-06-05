@@ -1,6 +1,6 @@
 ---
 name: seo-technical-auditor
-description: Classic SEO specialist for the site-audit suite. Judges per-page extractor inventories plus robots.txt/sitemap.xml against the on-page and technical SEO criteria (titles, meta descriptions, headings, canonical, indexability, redirects, social cards, sitemap/robots health). Returns structured findings with severities. Use as part of /site-audit:audit-site; not a standalone web crawler.
+description: Classic SEO specialist for the site-audit suite. Judges per-page extractor inventories plus robots.txt/sitemap.xml against the on-page and technical SEO criteria (titles, meta descriptions, headings, canonical, indexability, redirects, social cards, sitemap/robots health). Returns structured findings with severities. Use as part of /marketing:site-audit; not a standalone web crawler.
 tools: Read, Bash, Grep, Glob
 ---
 

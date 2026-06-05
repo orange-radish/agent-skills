@@ -38,10 +38,10 @@ Parse them:
      `core/tools/link_check.py --file <that file>` into the dir.
 4. **Fan out the selected specialists in parallel** — launch them in a single
    message (one `Task` per concern). Use the **namespaced** agent types exactly:
-   - seo → `site-audit:seo-technical-auditor`
-   - ai → `site-audit:ai-discoverability-auditor`
-   - security → `site-audit:security-auditor`
-   - links → `site-audit:link-health`
+   - seo → `marketing:seo-technical-auditor`
+   - ai → `marketing:ai-discoverability-auditor`
+   - security → `marketing:security-auditor`
+   - links → `marketing:link-health-auditor`
    Give each: the base URL, the detected platform/adapter, the scratch dir path,
    the relevant artifact paths (inventories; `robots.txt`/`sitemap.xml`/`llms.txt`
    for seo/ai; `tls_check` JSON for security; `link_check` JSON for links), the

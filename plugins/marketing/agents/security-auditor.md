@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: HTTP security-header + TLS specialist for the site-audit suite. Judges per-page response headers, cookies, and mixed content (from the shared inventory) plus tls_check.py output against the security-headers criteria, framing every fix by what the detected platform can actually control. Returns structured findings with severities. Use as part of /site-audit:audit-site; not an application pentester.
+description: HTTP security-header + TLS specialist for the site-audit suite. Judges per-page response headers, cookies, and mixed content (from the shared inventory) plus tls_check.py output against the security-headers criteria, framing every fix by what the detected platform can actually control. Returns structured findings with severities. Use as part of /marketing:site-audit; not an application pentester.
 tools: Read, Bash, Grep, Glob
 ---
 

@@ -9,7 +9,7 @@ standard) that were built for projects at Orange Radish.
 | Skill | Plugin | Description |
 |---|---|---|
 | `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
-| `seo-audit`, `security-audit`, `link-audit` | `site-audit` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow** and **Squarespace** adapters. Triggered by `/site-audit:audit-site`. |
+| `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow** and **Squarespace** adapters. Triggered by `/marketing:site-audit`. |
 
 **External dependencies** (the skill checks for these at startup and tells you
 what's missing): [`vtracer`](https://github.com/visioncortex/vtracer),
@@ -67,7 +67,7 @@ conda install -c conda-forge librsvg
 ```text
 /plugin marketplace add orange-radish/agent-skills
 /plugin install image-tools@orange-radish-skills
-/plugin install site-audit@orange-radish-skills
+/plugin install marketing@orange-radish-skills
 ```
 
 The skills are then model-invoked automatically when relevant, or you can run
@@ -75,11 +75,11 @@ them explicitly:
 
 ```text
 /image-tools:image-to-vector convert @filename.png to a svg file.
-/site-audit:audit-site https://your-site.com
-/site-audit:audit-site https://your-site.com --only=security,links
+/marketing:site-audit https://your-site.com
+/marketing:site-audit https://your-site.com --only=security,links
 ```
 
-`site-audit` crawls the live, published HTML once as ground truth (needs
+`/marketing:site-audit` crawls the live, published HTML once as ground truth (needs
 `python3`, no pip install) and fans out to four specialist sub-agents — **SEO**,
 **AI-discoverability**, **security headers/TLS**, and **link health** — then
 proposes fixes. It never writes to your site. Connect the official **Webflow

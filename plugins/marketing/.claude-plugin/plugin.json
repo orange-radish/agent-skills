@@ -1,0 +1,9 @@
+{
+  "name": "marketing",
+  "description": "Marketing-site tooling for Claude Code. Its /marketing:site-audit command audits a live website across four dimensions and proposes fixes: SEO best practices, AI-agent discoverability (structured data / JSON-LD, GEO/AEO), HTTP security headers + TLS, and link/redirect health. Crawls the rendered, published HTML once as ground truth and gives platform-specific fix guidance via Webflow and Squarespace adapters. Use to review a site's SEO, schema.org markup, robots/sitemap, security headers, certificates, and broken/redirecting links. Do not use for Core Web Vitals / performance audits, application-level pentesting, sites requiring authenticated crawling, or to write changes back to the live site.",
+  "author": { "name": "Orange Radish" },
+  "homepage": "https://github.com/orange-radish/agent-skills",
+  "repository": "https://github.com/orange-radish/agent-skills",
+  "license": "MIT",
+  "keywords": ["marketing", "seo", "structured-data", "schema-org", "json-ld", "geo", "security-headers", "tls", "link-checker", "webflow", "squarespace"]
+}

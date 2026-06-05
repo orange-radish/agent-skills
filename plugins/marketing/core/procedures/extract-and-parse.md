@@ -6,7 +6,7 @@ page. The agents reason over these JSON files — **not** raw HTML.
 ## Run the extractor
 The shared tools live in the plugin's `core/tools/` (Claude Code:
 `$CLAUDE_PLUGIN_ROOT/core/tools/`; running from a repo clone: the
-`plugins/site-audit/core/tools/` path).
+`plugins/marketing/core/tools/` path).
 ```sh
 TOOL="$CLAUDE_PLUGIN_ROOT/core/tools/site_extract.py"
 SCRATCH="$(mktemp -d)/site"; mkdir -p "$SCRATCH"

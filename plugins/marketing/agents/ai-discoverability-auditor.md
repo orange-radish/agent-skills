@@ -1,6 +1,6 @@
 ---
 name: ai-discoverability-auditor
-description: Structured-data and AI-discoverability (GEO/AEO) specialist for the site-audit suite. Judges per-page extractor inventories plus robots.txt/llms.txt against the structured-data and AI-discoverability criteria (JSON-LD schema.org coverage/validity, AI-crawler access posture, semantic structure, content crawlability, llms.txt). Returns structured findings and proposed JSON-LD. Use as part of /site-audit:audit-site; not a standalone web crawler.
+description: Structured-data and AI-discoverability (GEO/AEO) specialist for the site-audit suite. Judges per-page extractor inventories plus robots.txt/llms.txt against the structured-data and AI-discoverability criteria (JSON-LD schema.org coverage/validity, AI-crawler access posture, semantic structure, content crawlability, llms.txt). Returns structured findings and proposed JSON-LD. Use as part of /marketing:site-audit; not a standalone web crawler.
 tools: Read, Bash, Grep, Glob
 ---
 

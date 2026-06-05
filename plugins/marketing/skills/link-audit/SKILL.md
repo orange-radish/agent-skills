@@ -37,7 +37,7 @@ Audit + propose only; never writes.
 - A `status:null` connection error may be transient or bot-blocking — flag for
   manual confirmation rather than asserting "broken."
 
-When run via `/site-audit:audit-site`, this is the `link-health` sub-agent.
+When run via `/marketing:site-audit`, this is the `link-health-auditor` sub-agent.
 
 ## Do not
 - Do not write to the site, CMS, or MCP.
