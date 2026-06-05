@@ -44,3 +44,27 @@ ground truth.)
 Always remind the reader which changes require a **Business plan** (Code
 Injection) and that Squarespace controls `robots.txt`/`sitemap.xml`
 automatically.
+
+## Security headers (what Squarespace can vs. cannot set)
+Squarespace gives site owners **almost no response-header control** — this is
+the key honest caveat:
+- **Cannot** set `Content-Security-Policy`, `X-Frame-Options`, `Referrer-Policy`,
+  `Permissions-Policy`, or custom headers. Code Injection adds markup to the HTML
+  `<head>`; it does **not** set HTTP response headers. (A `<meta http-equiv>` CSP
+  is a weak, partial substitute and worth mentioning, not a real fix.)
+- **HSTS / TLS** are managed by Squarespace; HSTS and a modern TLS config are
+  generally provided, but not tunable.
+- **Cookies** are set by Squarespace; their flags aren't owner-configurable.
+So for most missing-header findings on Squarespace, the correct recommendation
+is: **report it as a platform limitation** (or "would require moving off
+Squarespace / fronting with a proxy"), not a settings change. Don't prescribe a
+header Squarespace can't set.
+
+## Links & redirects
+- **Internal broken links** — fix the link in the editor, or add a redirect:
+  **Settings → Advanced → URL Mappings** (`/old -> /new 301`).
+- **`http://` internal links** — edit the link to `https://` or a site-relative
+  path. Squarespace serves HTTPS and redirects http→https at the platform level.
+- **301 redirects / renamed pages** — use **URL Mappings** to repair links that
+  now 404 and to collapse redirect chains.
+- `www`/non-`www` canonicalization is handled by Squarespace.

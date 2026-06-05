@@ -6,12 +6,20 @@ is to author and package skills correctly.
 
 ## Layout
 
-- Skills live at `plugins/<plugin>/skills/<skill>/`, each with a `SKILL.md`.
+- Skills live at `plugins/<plugin>/skills/<skill>/`, each with a `SKILL.md`. A
+  plugin may ship **multiple peer skills** plus `commands/` and `agents/`.
+- A plugin may also have a plugin-level shared dir (e.g. `site-audit/core/` with
+  `tools/`, `procedures/`, `adapters/`) reused by several skills/agents/commands.
+  Reference it via `${CLAUDE_PLUGIN_ROOT}/core/...` from commands/agents and a
+  relative `../../core/...` from a skill's `SKILL.md`. Such a plugin is meant to
+  be installed whole — copying one skill folder in isolation won't include the
+  shared `core/`.
 - `plugins/<plugin>/.claude-plugin/plugin.json` is the plugin manifest.
 - `.claude-plugin/marketplace.json` (repo root) is the Claude Code catalog and
   must list every plugin.
 - `.agents/skills/<skill>` symlinks point into the canonical skill folders so
-  Codex can discover them when running from a clone of this repo.
+  Codex can discover them when running from a clone of this repo (one symlink
+  per skill, including each peer skill in a multi-skill plugin).
 
 The skill folder under `plugins/<plugin>/skills/` is the **single source of
 truth**. Do not create duplicate copies — `.agents/skills/` entries are symlinks,

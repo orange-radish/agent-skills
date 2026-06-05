@@ -22,7 +22,7 @@ adapter. A `--platform=` command argument overrides everything here.
 
 ## How to check
 ```sh
-curl -sL --max-time 15 -A "site-seo-audit/1.0" "<homepage-url>" \
+curl -sL --max-time 15 -A "site-audit/1.0" "<homepage-url>" \
   | grep -ioE 'generator" content="(webflow|squarespace)"|data-wf-(page|site)|SQUARESPACE_CONTEXT|website-files\.com|squarespace-cdn\.com' \
   | head
 ```

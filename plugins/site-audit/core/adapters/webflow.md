@@ -50,3 +50,30 @@ Webflow has **native SEO fields** — prefer them over custom code for the basic
 
 Always remind the reader: changes require **Publish** to appear on the live site,
 and JSON-LD/custom-code embeds need a paid plan.
+
+## Security headers (what Webflow can vs. cannot set)
+Webflow's header control is **limited** — it is not a general reverse proxy:
+- **Can set via Project Settings → Hosting → Custom security headers** (on paid
+  Site plans / Enterprise): a curated set including `Content-Security-Policy`,
+  `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`,
+  `Permissions-Policy`, and `Strict-Transport-Security` for the hosted domain.
+  Availability varies by plan — verify what the account exposes.
+- **TLS / HSTS** are managed by Webflow hosting; you can't tune cipher suites or
+  protocol versions.
+- **Cannot** set arbitrary per-route or per-asset response headers the way a
+  self-hosted server or a Cloudflare Worker in front of the site could.
+- **Cookies** are set by Webflow/third-party scripts, not by you; you can't add
+  `Secure`/`HttpOnly`/`SameSite` flags directly — the fix is to remove/replace
+  the script.
+For anything Webflow can't set, the honest recommendation is to **front the site
+with a reverse proxy / Cloudflare** (which can inject any header) or note it as a
+platform limitation. Never tell the reader to set a header Webflow can't.
+
+## Links & redirects
+- **Internal broken links** — fix the link in the Designer (the element's link
+  settings) or restore/redirect the missing page.
+- **301 redirects** — **Project Settings → Publishing → 301 Redirects** (path →
+  path). Use to repair links that 404 and to collapse redirect chains.
+- **`http://` internal links** — edit the element link to `https://` or a
+  root-relative path (`/page`) so it inherits the secure scheme.
+- Webflow auto-handles `www`/non-`www` canonicalization at the hosting level.

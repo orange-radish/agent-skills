@@ -25,9 +25,10 @@ registrations); it does **not** return what a crawler or AI bot actually sees.
 JSON-LD, the heading outline, canonical/hreflang, and robots directives all live
 in the *rendered* page. So:
 
-1. **Always crawl the live site for raw HTML** via `tools/seo_extract.py` (it
-   uses `curl`-equivalent `urllib`, not `WebFetch` — `WebFetch` summarizes
-   through a small model and drops the exact bytes you need).
+1. **Always crawl the live site for raw HTML** via the shared
+   `../../core/tools/site_extract.py` (it uses `curl`-equivalent `urllib`, not
+   `WebFetch` — `WebFetch` summarizes through a small model and drops the exact
+   bytes you need).
 2. **Every finding must be traceable to a field** in the extractor's JSON
    inventory. Do not eyeball HTML or assert facts the inventory doesn't show.
 3. **A CMS/MCP is enrichment only** — it tells you the *configured* value (so a
@@ -48,21 +49,24 @@ Optional:
 
 ## Workflow
 
+The shared crawl (detection, discovery, the extractor) lives in the plugin's
+`../../core/` and is reused by every skill in the suite.
+
 ### 1. Detect the platform
-Fetch the homepage and follow `adapters/_detection.md` to pick an adapter
-(`adapters/webflow.md`, `adapters/squarespace.md`, or `adapters/generic.md`).
-A `--platform` override wins over detection.
+Fetch the homepage and follow `../../core/adapters/_detection.md` to pick an
+adapter (`../../core/adapters/webflow.md`, `.../squarespace.md`, or
+`.../generic.md`). A `--platform` override wins over detection.
 
 ### 2. Discover URLs
-Follow `procedures/discover-urls.md`: `sitemap.xml` first, then adapter
-enrichment (Webflow MCP `pages_list` when connected), then homepage link
+Follow `../../core/procedures/discover-urls.md`: `sitemap.xml` first, then
+adapter enrichment (Webflow MCP `pages_list` when connected), then homepage link
 extraction as a fallback. Also fetch `robots.txt`. Default scope is the whole
 site; explicit page arguments narrow it.
 
 ### 3. Extract a JSON inventory per page
-Follow `procedures/extract-and-parse.md` to run `tools/seo_extract.py` on each
-URL and save one inventory JSON per page to a scratch dir. Read the inventories,
-not the raw HTML.
+Follow `../../core/procedures/extract-and-parse.md` to run
+`../../core/tools/site_extract.py` on each URL and save one inventory JSON per
+page to a scratch dir. Read the inventories, not the raw HTML.
 
 ### 4. Enrich (optional, adapter-driven)
 The Webflow adapter pulls read-only MCP data (configured SEO/OG, CMS structure,
@@ -74,13 +78,13 @@ Two concerns, judged against `criteria/`:
 - **Classic SEO** → `criteria/seo-onpage.md` + `criteria/seo-technical.md`
 - **AI discoverability** → `criteria/structured-data.md` + `criteria/ai-discoverability.md`
 
-When invoked through the `/site-seo:audit-site` command these two concerns run
+When invoked through the `/site-audit:audit-site` command these two concerns run
 as the `seo-technical-auditor` and `ai-discoverability-auditor` sub-agents in
-parallel. When the skill is invoked directly, work through both concern sets
-yourself.
+parallel (alongside the suite's security and link-health agents). When the skill
+is invoked directly, work through both concern sets yourself.
 
 ### 6. Report and propose fixes
-Follow `procedures/report-and-fixes.md`: merge findings, dedupe shared concerns,
+Follow `../../core/procedures/report-and-fixes.md`: merge findings, dedupe shared concerns,
 prioritize **P0 / P1 / P2**, and emit `seo-audit-<date>.md` plus a
 `proposed-fixes/` directory. Fill JSON-LD from `templates/jsonld/` and draft
 `templates/llms.txt`. Every fix carries the selected adapter's exact paste

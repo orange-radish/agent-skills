@@ -11,9 +11,9 @@ Goal: produce the list of in-scope page URLs, plus fetch `robots.txt` and
 ## 1. robots.txt and sitemap
 ```sh
 BASE="https://example.com"   # scheme + host, no trailing path
-curl -sL --max-time 15 -A "site-seo-audit/1.0" "$BASE/robots.txt"  -o robots.txt  -w "%{http_code}\n"
-curl -sL --max-time 15 -A "site-seo-audit/1.0" "$BASE/sitemap.xml" -o sitemap.xml -w "%{http_code}\n"
-curl -sL --max-time 15 -A "site-seo-audit/1.0" "$BASE/llms.txt"    -o llms.txt    -w "%{http_code}\n"
+curl -sL --max-time 15 -A "site-audit/1.0" "$BASE/robots.txt"  -o robots.txt  -w "%{http_code}\n"
+curl -sL --max-time 15 -A "site-audit/1.0" "$BASE/sitemap.xml" -o sitemap.xml -w "%{http_code}\n"
+curl -sL --max-time 15 -A "site-audit/1.0" "$BASE/llms.txt"    -o llms.txt    -w "%{http_code}\n"
 ```
 Record each status. If `robots.txt` contains a `Sitemap:` line pointing
 elsewhere, fetch that instead.
@@ -35,7 +35,7 @@ surface any page present in one source but not the other as a finding.
 If there is no usable sitemap and no MCP page list, fetch the homepage and
 extract same-host links from nav/footer:
 ```sh
-curl -sL --max-time 15 -A "site-seo-audit/1.0" "$BASE/" \
+curl -sL --max-time 15 -A "site-audit/1.0" "$BASE/" \
   | grep -oE 'href="[^"]+"' | sed -E 's/href="//; s/"//' \
   | grep -E "^(/|$BASE)" | sort -u
 ```
