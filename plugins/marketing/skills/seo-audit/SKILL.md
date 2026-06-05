@@ -1,6 +1,6 @@
 ---
 name: seo-audit
-description: Audit a live website for SEO best practices and AI-agent discoverability (structured data / JSON-LD, GEO/AEO), then propose fixes with platform-specific paste instructions. Crawls the rendered published HTML as ground truth and enriches via the Webflow MCP when available; ships Webflow and Squarespace adapters. Use when reviewing a marketing site's titles, meta tags, headings, canonical/hreflang, robots.txt, sitemap, schema.org markup, and AI-crawler readiness. Do not use for Core Web Vitals / performance profiling, for sites needing authenticated crawling, or to write changes back to the live site.
+description: Audit a live website for SEO best practices and AI-agent discoverability (structured data / JSON-LD, GEO/AEO), then propose fixes with platform-specific paste instructions. Crawls the rendered published HTML as ground truth and enriches via the Webflow MCP when available; ships Webflow, Squarespace, WordPress, and Wix adapters. Use when reviewing a marketing site's titles, meta tags, headings, canonical/hreflang, robots.txt, sitemap, schema.org markup, and AI-crawler readiness. Do not use for Core Web Vitals / performance profiling, for sites needing authenticated crawling, or to write changes back to the live site.
 user-invocable: false
 allowed-tools:
   - Read
@@ -42,7 +42,7 @@ Required:
 
 Optional:
 - specific pages → audit only those instead of the whole site.
-- `--platform=webflow|squarespace|generic` → override auto-detection.
+- `--platform=webflow|squarespace|wordpress|wix|generic` → override auto-detection.
 - known business facts (legal name, logo URL, social profiles, products/FAQs) →
   used to fill JSON-LD templates; otherwise the templates are emitted with
   clearly marked `TODO` placeholders.
@@ -54,8 +54,8 @@ The shared crawl (detection, discovery, the extractor) lives in the plugin's
 
 ### 1. Detect the platform
 Fetch the homepage and follow `../../core/adapters/_detection.md` to pick an
-adapter (`../../core/adapters/webflow.md`, `.../squarespace.md`, or
-`.../generic.md`). A `--platform` override wins over detection.
+adapter (`../../core/adapters/{webflow,squarespace,wordpress,wix,generic}.md`).
+A `--platform` override wins over detection.
 
 ### 2. Discover URLs
 Follow `../../core/procedures/discover-urls.md`: `sitemap.xml` first, then

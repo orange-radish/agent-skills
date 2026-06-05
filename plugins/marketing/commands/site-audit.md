@@ -1,6 +1,6 @@
 ---
-description: Audit a live website across SEO, AI-agent discoverability, security headers/TLS, and link health — then propose fixes (no writes). Crawls the rendered HTML once as ground truth, with Webflow + Squarespace adapters for platform-specific fix guidance.
-argument-hint: <base-url> [page-url ...] [--platform=webflow|squarespace|generic] [--only=seo,ai,security,links]
+description: Audit a live website across SEO, AI-agent discoverability, security headers/TLS, and link health — then propose fixes (no writes). Crawls the rendered HTML once as ground truth, with Webflow, Squarespace, WordPress, and Wix adapters for platform-specific fix guidance.
+argument-hint: <base-url> [page-url ...] [--platform=webflow|squarespace|wordpress|wix|generic] [--only=seo,ai,security,links]
 allowed-tools: Bash, Read, Grep, Glob, Task, WebFetch
 ---
 
@@ -23,7 +23,7 @@ Parse them:
 
 1. **Detect the platform** — fetch the homepage and apply
    `core/adapters/_detection.md` to pick the adapter (Webflow / Squarespace /
-   generic). Honor any `--platform` override. State the result.
+   WordPress / Wix / generic). Honor any `--platform` override. State the result.
 2. **Discover URLs** — follow `core/procedures/discover-urls.md` (sitemap →
    adapter/MCP enrichment → homepage-crawl fallback) and apply its **scoping
    heuristic** (audit nav + index + content pages, sample template/taxonomy

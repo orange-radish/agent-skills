@@ -9,7 +9,7 @@ standard) that were built for projects at Orange Radish.
 | Skill | Plugin | Description |
 |---|---|---|
 | `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
-| `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow** and **Squarespace** adapters. Triggered by `/marketing:site-audit`. |
+| `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow**, **Squarespace**, **WordPress**, and **Wix** adapters. Triggered by `/marketing:site-audit`. |
 
 **External dependencies** (the skill checks for these at startup and tells you
 what's missing): [`vtracer`](https://github.com/visioncortex/vtracer),
@@ -84,7 +84,8 @@ them explicitly:
 **AI-discoverability**, **security headers/TLS**, and **link health** — then
 proposes fixes. It never writes to your site. Connect the official **Webflow
 MCP** for optional read-only enrichment; the audit also works without it, and
-ships a **Squarespace** adapter and a generic fallback.
+ships **Squarespace**, **WordPress**, and **Wix** adapters plus a generic
+fallback.
 
 Update later with `/plugin marketplace update orange-radish-skills`.
 
