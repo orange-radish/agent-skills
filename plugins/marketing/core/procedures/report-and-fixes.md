@@ -45,6 +45,15 @@ Only emit the artifacts for concerns that actually ran and have findings.
 5. **Security posture summary** — TLS protocol/cipher/cert, which headers are
    present vs absent, and — crucially — **what the platform can vs. cannot set**
    (per the adapter), so absent-but-unfixable items aren't read as easy wins.
+5b. **Webflow-native (Data API / Designer)** — *only if the Webflow-native
+   fan-out ran* (see `webflow-native.md`). Report each Webflow skill's score +
+   summary (site-audit's 0-100, accessibility-audit's WCAG result, asset-audit's
+   proposed alt/name improvements — all report-only). **Call out
+   configured-vs-rendered gaps explicitly**: where Webflow's Data-API view (field
+   is set) disagrees with our rendered crawl (tag missing/duplicate) → flag as a
+   likely unpublished change or template override. List any Webflow skill that
+   didn't run (not authenticated / Designer not connected / not installed) under
+   coverage caveats with the install+auth pointer.
 6. **How to apply the fixes** — grouped by concern, using the active adapter's
    paste instructions (`core/adapters/<platform>.md`), pointing at the files in
    `proposed-fixes/`. Include platform caveats (Webflow custom code needs a paid

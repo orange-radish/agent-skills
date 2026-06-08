@@ -87,6 +87,13 @@ MCP** for optional read-only enrichment; the audit also works without it, and
 ships **Squarespace**, **WordPress**, and **Wix** adapters plus a generic
 fallback.
 
+If the site is **Webflow** and you also have [webflow/webflow-skills](https://github.com/webflow/webflow-skills)
+installed and its MCP authenticated, the audit additionally fans out to Webflow's
+own `site-audit`, `accessibility-audit`, and `asset-audit` (report-only) skills —
+adding the *configured* Data-API/Designer view to our *rendered* one and folding
+both into a single report (with configured-vs-rendered cross-checks). It's
+skipped cleanly when not Webflow or the plugin/MCP isn't available.
+
 Update later with `/plugin marketplace update orange-radish-skills`.
 
 ## Install — Codex

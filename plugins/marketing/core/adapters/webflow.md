@@ -23,6 +23,14 @@ via tool search for "webflow pages / sites / collections"):
 - **list registered custom code / scripts** → see whether JSON-LD is already
   injected site-wide vs per-page (explains rendered findings).
 
+**Prefer Webflow's own audit for the config-side view.** If the user has the
+`webflow-skills` plugin installed and the Webflow MCP authenticated, don't
+hand-roll deep CMS/structure analysis via raw MCP calls — the orchestrator fans
+out to `webflow-skills:site-audit` (and `asset-audit` report-only,
+`accessibility-audit`) per `../procedures/webflow-native.md`, which cover the
+configured data model far more thoroughly. Use the raw MCP calls above only for
+the quick configured-vs-rendered cross-check when that fan-out isn't available.
+
 ## Where fixes get applied (paste instructions for the report)
 
 Webflow has **native SEO fields** — prefer them over custom code for the basics:

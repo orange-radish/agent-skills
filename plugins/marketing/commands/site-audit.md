@@ -36,8 +36,8 @@ Parse them:
    - security → run `core/tools/tls_check.py <host>` once per host into the dir.
    - links → union every inventory's `links[].href`, dedupe to a file, and run
      `core/tools/link_check.py --file <that file>` into the dir.
-4. **Fan out the selected specialists in parallel** — launch them in a single
-   message (one `Task` per concern). Use the **namespaced** agent types exactly:
+4. **Fan out the specialists in parallel** — launch them in a single message
+   (one `Task` per concern). Use the **namespaced** agent types exactly:
    - seo → `marketing:seo-technical-auditor`
    - ai → `marketing:ai-discoverability-auditor`
    - security → `marketing:security-auditor`
@@ -47,9 +47,21 @@ Parse them:
    for seo/ai; `tls_check` JSON for security; `link_check` JSON for links), the
    in-scope URL list, and (Webflow only, if connected) any MCP enrichment data.
    Each returns structured findings.
-5. **Merge & report** — combine all result sets, dedupe shared concerns,
-   prioritize P0/P1/P2, and write the deliverables per
-   `core/procedures/report-and-fixes.md`: `site-audit-<date>.md` plus a
+
+   **Webflow-native add-on (only when platform = Webflow):** also follow
+   `core/procedures/webflow-native.md` — run its preflight, and if the
+   `webflow-skills` plugin is installed and the Webflow MCP is authenticated,
+   add to the SAME parallel fan-out one `marketing:webflow-native-auditor`
+   sub-agent per Webflow skill (`webflow-skills:site-audit`,
+   `webflow-skills:accessibility-audit`, `webflow-skills:asset-audit` in
+   report-only mode). These run foreground and are **report-only** — never apply
+   changes. If the plugin isn't installed / MCP isn't authenticated, skip them,
+   show the install+auth pointer from that procedure, and proceed with the four
+   core concerns. Non-Webflow platforms skip this entirely.
+5. **Merge & report** — combine all result sets (core + any Webflow-native),
+   dedupe shared concerns, prioritize P0/P1/P2, and write the deliverables per
+   `core/procedures/report-and-fixes.md`: `site-audit-<date>.md` (with its
+   **Webflow-native** section + configured-vs-rendered cross-checks) plus a
    `proposed-fixes/` directory (JSON-LD from `skills/seo-audit/templates/jsonld/`,
    meta values, optional `robots.txt`, drafted `llms.txt`, `security-headers.md`,
    `broken-links.md`). Use the active adapter's paste instructions for every fix.
