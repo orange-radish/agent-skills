@@ -9,6 +9,7 @@ standard) that were built for projects at Orange Radish.
 | Skill | Plugin | Description |
 |---|---|---|
 | `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
+| `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow**, **Squarespace**, **WordPress**, and **Wix** adapters. Triggered by `/marketing:site-audit`. |
 
 **External dependencies** (the skill checks for these at startup and tells you
 what's missing): [`vtracer`](https://github.com/visioncortex/vtracer),
@@ -66,14 +67,33 @@ conda install -c conda-forge librsvg
 ```text
 /plugin marketplace add orange-radish/agent-skills
 /plugin install image-tools@orange-radish-skills
+/plugin install marketing@orange-radish-skills
 ```
 
-The skill is then model-invoked automatically when relevant, or you can run it
-explicitly:
+The skills are then model-invoked automatically when relevant, or you can run
+them explicitly:
 
 ```text
 /image-tools:image-to-vector convert @filename.png to a svg file.
+/marketing:site-audit https://your-site.com
+/marketing:site-audit https://your-site.com --only=security,links
 ```
+
+`/marketing:site-audit` crawls the live, published HTML once as ground truth (needs
+`python3`, no pip install) and fans out to four specialist sub-agents — **SEO**,
+**AI-discoverability**, **security headers/TLS**, and **link health** — then
+proposes fixes. It never writes to your site. Connect the official **Webflow
+MCP** for optional read-only enrichment; the audit also works without it, and
+ships **Squarespace**, **WordPress**, and **Wix** adapters plus a generic
+fallback.
+
+If the site is **Webflow** and you also have [webflow/webflow-skills](https://github.com/webflow/webflow-skills)
+installed and its MCP authenticated, the audit additionally fans out to Webflow's
+own `site-audit`, `cms-best-practices`, `accessibility-audit`, and `asset-audit`
+(all read-only / report-only) skills —
+adding the *configured* Data-API/Designer view to our *rendered* one and folding
+both into a single report (with configured-vs-rendered cross-checks). It's
+skipped cleanly when not Webflow or the plugin/MCP isn't available.
 
 Update later with `/plugin marketplace update orange-radish-skills`.
 

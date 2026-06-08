@@ -1,0 +1,31 @@
+# TODO: Site / Company Name
+
+> TODO: one or two sentences describing what the company does and who it is for.
+
+This file follows the llms.txt convention (https://llmstxt.org): a curated,
+plain-markdown map that helps AI agents find and cite the most important pages.
+Keep it short, factual, and link-first.
+
+## Key pages
+
+- [Home](TODO: https://example.com/): TODO: what the page covers
+- [Product / Services](TODO: https://example.com/product): TODO: short summary
+- [Pricing](TODO: https://example.com/pricing): TODO: short summary
+- [About](TODO: https://example.com/about): TODO: short summary
+- [Contact](TODO: https://example.com/contact): TODO: short summary
+
+## Resources
+
+- [Blog](TODO: https://example.com/blog): TODO: topic areas covered
+- [FAQ](TODO: https://example.com/faq): TODO: common questions answered
+
+## Key facts
+
+- TODO: founded / location / category
+- TODO: primary product or service in one line
+- TODO: differentiators an agent should cite accurately
+
+## Optional
+
+<!-- Provide an llms-full.txt with the full text of key pages if you want agents
+     to have the complete content without crawling each page. -->

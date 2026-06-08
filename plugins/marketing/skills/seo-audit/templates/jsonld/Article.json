@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "TODO: Article title (<= 110 chars)",
+  "description": "TODO: short summary",
+  "image": "TODO: https://example.com/article-hero.jpg",
+  "datePublished": "TODO: 2026-01-01",
+  "dateModified": "TODO: 2026-01-01",
+  "author": { "@type": "Person", "name": "TODO: Author name" },
+  "publisher": { "@id": "TODO: https://example.com/#organization" },
+  "mainEntityOfPage": "TODO: https://example.com/blog/this-post"
+}

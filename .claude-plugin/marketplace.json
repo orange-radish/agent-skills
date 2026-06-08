@@ -9,6 +9,13 @@
       "description": "Convert raster images (PNG/JPG) into accurate SVG, SwiftUI, or Android VectorDrawable vectors.",
       "category": "design",
       "keywords": ["svg", "vector", "image", "swiftui", "android-vectordrawable"]
+    },
+    {
+      "name": "marketing",
+      "source": "./plugins/marketing",
+      "description": "Marketing-site tooling. /marketing:site-audit audits a live website and proposes fixes across SEO, AI-agent discoverability (structured data / JSON-LD, GEO/AEO), security headers + TLS, and link/redirect health, with Webflow, Squarespace, WordPress, and Wix adapters.",
+      "category": "productivity",
+      "keywords": ["marketing", "seo", "structured-data", "schema-org", "json-ld", "geo", "security-headers", "tls", "link-checker", "webflow", "squarespace", "wordpress", "wix"]
     }
   ]
 }

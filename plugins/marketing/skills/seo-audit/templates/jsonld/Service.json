@@ -1,0 +1,15 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "TODO: name of the service",
+  "name": "TODO: Service name",
+  "description": "TODO: what the service does",
+  "provider": { "@id": "TODO: https://example.com/#organization" },
+  "areaServed": "TODO: e.g. United States, or a city/region",
+  "offers": {
+    "@type": "Offer",
+    "url": "TODO: https://example.com/service",
+    "price": "TODO: 0.00 (omit price block if quote-based)",
+    "priceCurrency": "TODO: USD"
+  }
+}

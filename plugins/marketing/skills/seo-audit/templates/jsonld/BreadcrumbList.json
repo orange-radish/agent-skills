@@ -1,0 +1,23 @@
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "TODO: Home",
+      "item": "TODO: https://example.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "TODO: Section",
+      "item": "TODO: https://example.com/section/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "TODO: This page (no item URL on the final crumb)"
+    }
+  ]
+}
