@@ -11,11 +11,27 @@ standard) that were built for projects at Orange Radish.
 | `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
 | `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow**, **Squarespace**, **WordPress**, and **Wix** adapters. Triggered by `/marketing:site-audit`. |
 
-**External dependencies** (the skill checks for these at startup and tells you
-what's missing): [`vtracer`](https://github.com/visioncortex/vtracer),
-ImageMagick (`magick`/`convert`), and librsvg (`rsvg-convert`). A Swift toolchain
-is needed only for **SwiftUI** output, which in practice requires **macOS**
-(SwiftUI rendering is Apple-only).
+## External dependencies
+
+Each skill checks for its dependencies at startup and tells you what's missing.
+
+### `image-tools`
+
+- [`vtracer`](https://github.com/visioncortex/vtracer),
+  ImageMagick (`magick`/`convert`), and librsvg (`rsvg-convert`) — required.
+- A Swift toolchain — only for **SwiftUI** output, which in practice requires
+  **macOS** (SwiftUI rendering is Apple-only).
+
+### `marketing`
+
+- `python3` — required (the crawl/link/TLS tools are standard-library only, no
+  `pip install` needed).
+- The official **Webflow MCP** — *optional*; gives the audit read-only,
+  configured-view enrichment for Webflow sites.
+- The [webflow/webflow-skills](https://github.com/webflow/webflow-skills) plugin
+  (with its MCP authenticated) — *optional*; if present on a Webflow site, the
+  audit additionally fans out to Webflow's own report-only skills for richer
+  Webflow-native auditing.
 
 ### Installing Dependencies 
 
@@ -61,6 +77,18 @@ pacman -S mingw-w64-x86_64-librsvg  # (then add the MSYS2 bin dir to PATH)
 #   conda
 conda install -c conda-forge librsvg
 ```
+
+For richer Webflow auditing with `marketing`, install the
+[webflow/webflow-skills](https://github.com/webflow/webflow-skills) plugin and
+authenticate its MCP (in Claude Code):
+
+```text
+/plugin marketplace add webflow/webflow-skills
+/plugin install webflow-skills@webflow-skills
+```
+
+This is optional — `/marketing:site-audit` works without it and is skipped
+cleanly on non-Webflow sites or when the plugin/MCP isn't available.
 
 ## Install — Claude Code
 
@@ -131,10 +159,15 @@ directly from a clone of it without copying anything.
 agent-skills/
 ├── .claude-plugin/marketplace.json     # Claude Code marketplace catalog
 ├── plugins/
-│   └── image-tools/                    # one plugin per cohesive domain
+│   ├── image-tools/                    # one plugin per cohesive domain
+│   │   ├── .claude-plugin/plugin.json
+│   │   └── skills/image-to-vector/     # the skill (single source of truth)
+│   └── marketing/                      # the site-audit suite
 │       ├── .claude-plugin/plugin.json
-│       └── skills/
-│           └── image-to-vector/        # the skill (single source of truth)
+│       ├── commands/site-audit.md      # /marketing:site-audit orchestrator
+│       ├── agents/                     # seo / ai / security / link / webflow-native auditors
+│       ├── core/                       # shared crawl, adapters, tools, procedures
+│       └── skills/                     # seo-audit, security-audit, link-audit
 └── .agents/skills/                     # symlinks for Codex repo-local use
     └── image-to-vector -> ../../plugins/image-tools/skills/image-to-vector
 ```
