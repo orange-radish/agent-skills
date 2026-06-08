@@ -89,7 +89,8 @@ fallback.
 
 If the site is **Webflow** and you also have [webflow/webflow-skills](https://github.com/webflow/webflow-skills)
 installed and its MCP authenticated, the audit additionally fans out to Webflow's
-own `site-audit`, `accessibility-audit`, and `asset-audit` (report-only) skills —
+own `site-audit`, `cms-best-practices`, `accessibility-audit`, and `asset-audit`
+(all read-only / report-only) skills —
 adding the *configured* Data-API/Designer view to our *rendered* one and folding
 both into a single report (with configured-vs-rendered cross-checks). It's
 skipped cleanly when not Webflow or the plugin/MCP isn't available.

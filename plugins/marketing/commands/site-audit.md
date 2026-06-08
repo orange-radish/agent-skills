@@ -53,9 +53,10 @@ Parse them:
    `webflow-skills` plugin is installed and the Webflow MCP is authenticated,
    add to the SAME parallel fan-out one `marketing:webflow-native-auditor`
    sub-agent per Webflow skill (`webflow-skills:site-audit`,
-   `webflow-skills:accessibility-audit`, `webflow-skills:asset-audit` in
-   report-only mode). These run foreground and are **report-only** — never apply
-   changes. If the plugin isn't installed / MCP isn't authenticated, skip them,
+   `webflow-skills:cms-best-practices`, `webflow-skills:accessibility-audit`,
+   `webflow-skills:asset-audit` in report-only mode). These run foreground and
+   are **report-only** — never apply changes (cms-best-practices runs in
+   analysis mode and skips its interactive questions). If the plugin isn't installed / MCP isn't authenticated, skip them,
    show the install+auth pointer from that procedure, and proceed with the four
    core concerns. Non-Webflow platforms skip this entirely.
 5. **Merge & report** — combine all result sets (core + any Webflow-native),

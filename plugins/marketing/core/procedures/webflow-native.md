@@ -14,6 +14,10 @@ concerns.
 ## Which skills (decided)
 Fan out to these via the `webflow-native-auditor` sub-agent (one Task per skill):
 - `webflow-skills:site-audit` — read-only Data-API health/score.
+- `webflow-skills:cms-best-practices` — read-only CMS architecture review
+  (collections, field types, relationships, plan limits). Run in analysis/report
+  mode against the existing site; the sub-agent suppresses its interactive
+  clarifying questions and never triggers its follow-on write skills.
 - `webflow-skills:accessibility-audit` — WCAG 2.1 report (**needs the Webflow
   Designer connection**; if unavailable the sub-agent returns `ran:false`).
 - `webflow-skills:asset-audit` — **report-only**: identify assets missing alt
