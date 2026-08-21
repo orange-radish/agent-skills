@@ -20,6 +20,28 @@ This is the first pass only — render, compare, and revise via `procedures/rend
   - detailed artwork
 - Requested output format(s)
 
+## First check that vtracer can see the subject
+
+`--colormode bw` binarises on luminance. That separates a light subject on
+a dark field, but not a mid-brightness one — a mid-green ball on navy comes
+back as **nothing**: vtracer emits only the background rectangle and drops
+the subject silently, with a successful exit code. Colour mode is not the
+fallback; on a flat two-colour icon it returns a separate path per
+antialiasing shade (dozens of them).
+
+So look at what the trace actually contains before building anything on
+it. If the subpaths do not correspond to the inventory's contours, trace a
+mask instead:
+
+```sh
+python3 tools/mask-from-inventory.py inventory.json "$SOURCE" /tmp/mask.png
+vtracer --input /tmp/mask.png --output /tmp/trace.svg --colormode bw --mode spline
+```
+
+That reuses the threshold `inspect-outline.py` already chose, so vtracer
+and the inventory describe the same mask and their contours correspond —
+worth doing even when bw mode does work.
+
 ## Run both modes and stitch by segment kind
 
 The inventory already classified each segment. Use vtracer to measure
@@ -62,6 +84,17 @@ produce plausible-looking paths, so they survive visual review.
   long segment made of few cubics can look shorter than a short segment
   made of many, and the heuristic silently selects the wrong way round —
   dropping a region's entire edge, which then fills as a solid wedge.
+
+- **Apply each `<path>`'s `transform`.** vtracer may return its regions
+  across several `<path>` elements, each carrying its own
+  `transform="translate(dx,dy)"`, and the coordinates in `d` are relative
+  to it. Read the `d` attributes without applying those offsets and every
+  region lands somewhere wrong. This one hides easily: a trace that comes
+  back as a single path at `translate(0,0)` works fine while ignoring
+  transforms, so the bug only appears on a later source. Fold the offsets
+  into absolute coordinates before matching anything against the
+  inventory, and check the subpath count and bounding boxes against the
+  inventory's contours as a cheap guard.
 
 - **Pin each authored segment to the inventory's vertices, not to the
   nearest traced sample.** The nearest vtracer sample can sit a few px off
