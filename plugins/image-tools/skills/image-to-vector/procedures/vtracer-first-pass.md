@@ -43,6 +43,36 @@ If vtracer's segment count along a contour disagrees with the inventory,
 inventory segments to match vtracer's output — that is how kinks get
 smoothed away.
 
+### Stitching cautions
+
+Three properties of these two tools cause silent, hard-to-spot damage when
+you line an inventory segment up against vtracer's output. All three
+produce plausible-looking paths, so they survive visual review.
+
+- **The inventory and vtracer walk a contour in opposite directions.** Take
+  an inventory segment's vertices in vtracer's order without checking, and
+  you get the complement of the arc you wanted — the long way round the
+  contour. Establish the direction **once per contour**, by checking which
+  orientation makes the segment spans tile the contour exactly, and reuse
+  it for every segment on that contour.
+
+- **Do not pick the direction per segment by "shorter arc".** vtracer emits
+  a fixed number of samples per cubic regardless of how long that cubic is,
+  so distance in sample-index space is not proportional to arc length. A
+  long segment made of few cubics can look shorter than a short segment
+  made of many, and the heuristic silently selects the wrong way round —
+  dropping a region's entire edge, which then fills as a solid wedge.
+
+- **Pin each authored segment to the inventory's vertices, not to the
+  nearest traced sample.** The nearest vtracer sample can sit a few px off
+  the vertex the inventory named. Pin before fitting, so the fit accounts
+  for it: that keeps adjacent segments sharing an exact endpoint, and keeps
+  corners and spike tips as real path nodes instead of points a curve
+  happens to pass near. The inventory wins on disagreement.
+
+Verify the result rather than trusting it — see `tools/verify-conformance.py`,
+described in `criteria/geometry.md`.
+
 ## Basic Command
 
 For a quick first look before the per-segment stitch:
