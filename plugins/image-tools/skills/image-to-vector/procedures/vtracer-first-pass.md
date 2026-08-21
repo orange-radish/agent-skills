@@ -20,6 +20,28 @@ This is the first pass only — render, compare, and revise via `procedures/rend
   - detailed artwork
 - Requested output format(s)
 
+## First check that vtracer can see the subject
+
+`--colormode bw` binarises on luminance. That separates a light subject on
+a dark field, but not a mid-brightness one — a mid-green ball on navy comes
+back as **nothing**: vtracer emits only the background rectangle and drops
+the subject silently, with a successful exit code. Colour mode is not the
+fallback; on a flat two-colour icon it returns a separate path per
+antialiasing shade (dozens of them).
+
+So look at what the trace actually contains before building anything on
+it. If the subpaths do not correspond to the inventory's contours, trace a
+mask instead:
+
+```sh
+python3 tools/mask-from-inventory.py inventory.json "$SOURCE" /tmp/mask.png
+vtracer --input /tmp/mask.png --output /tmp/trace.svg --colormode bw --mode spline
+```
+
+That reuses the threshold `inspect-outline.py` already chose, so vtracer
+and the inventory describe the same mask and their contours correspond —
+worth doing even when bw mode does work.
+
 ## Run both modes and stitch by segment kind
 
 The inventory already classified each segment. Use vtracer to measure
@@ -42,6 +64,47 @@ If vtracer's segment count along a contour disagrees with the inventory,
 **subdivide vtracer's path** to match the inventory. Never merge two
 inventory segments to match vtracer's output — that is how kinks get
 smoothed away.
+
+### Stitching cautions
+
+Three properties of these two tools cause silent, hard-to-spot damage when
+you line an inventory segment up against vtracer's output. All three
+produce plausible-looking paths, so they survive visual review.
+
+- **The inventory and vtracer walk a contour in opposite directions.** Take
+  an inventory segment's vertices in vtracer's order without checking, and
+  you get the complement of the arc you wanted — the long way round the
+  contour. Establish the direction **once per contour**, by checking which
+  orientation makes the segment spans tile the contour exactly, and reuse
+  it for every segment on that contour.
+
+- **Do not pick the direction per segment by "shorter arc".** vtracer emits
+  a fixed number of samples per cubic regardless of how long that cubic is,
+  so distance in sample-index space is not proportional to arc length. A
+  long segment made of few cubics can look shorter than a short segment
+  made of many, and the heuristic silently selects the wrong way round —
+  dropping a region's entire edge, which then fills as a solid wedge.
+
+- **Apply each `<path>`'s `transform`.** vtracer may return its regions
+  across several `<path>` elements, each carrying its own
+  `transform="translate(dx,dy)"`, and the coordinates in `d` are relative
+  to it. Read the `d` attributes without applying those offsets and every
+  region lands somewhere wrong. This one hides easily: a trace that comes
+  back as a single path at `translate(0,0)` works fine while ignoring
+  transforms, so the bug only appears on a later source. Fold the offsets
+  into absolute coordinates before matching anything against the
+  inventory, and check the subpath count and bounding boxes against the
+  inventory's contours as a cheap guard.
+
+- **Pin each authored segment to the inventory's vertices, not to the
+  nearest traced sample.** The nearest vtracer sample can sit a few px off
+  the vertex the inventory named. Pin before fitting, so the fit accounts
+  for it: that keeps adjacent segments sharing an exact endpoint, and keeps
+  corners and spike tips as real path nodes instead of points a curve
+  happens to pass near. The inventory wins on disagreement.
+
+Verify the result rather than trusting it — see `tools/verify-conformance.py`,
+described in `criteria/geometry.md`.
 
 ## Basic Command
 

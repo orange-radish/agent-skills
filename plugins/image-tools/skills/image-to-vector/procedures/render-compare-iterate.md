@@ -21,7 +21,13 @@ Repeat until success or bailout (see "Bailout Conditions"):
    - difference image (from `magick compare`, see below)
    - zoom crops (`procedures/zoom-inspection.md`)
    - numerical pixel-diff metric
-3. **Check** the render against every applicable criterion. Start with **inventory conformance**: for every vertex with `kind ∈ {corner, sharp_corner, spike}` in the `inspect-outline.py` inventory, confirm the rendered output has a visually distinct boundary at that point. A smoothed kink or smoothed spike is a `criteria/geometry.md` violation (named failure modes there). Then check `criteria/geometry.md`, `criteria/color.md`, `criteria/gradients.md`, and `criteria/visual-fidelity.md`. Record every violation with the criterion file it failed and the region of the image it affects. Use this list both to drive fixes and to detect stalled progress later.
+3. **Check** the render against every applicable criterion. Start with **inventory conformance**, and run it rather than eyeballing it:
+
+   ```sh
+   python3 tools/verify-conformance.py inventory.json --svg reviewed.svg
+   ```
+
+   That checks every vertex with `kind ∈ {corner, sharp_corner, spike}` for a missing node, a missing kink / smoothed spike, or a phantom notch, and exits non-zero on any of them. Fix what it reports before spending time on the visual pass — a dropped edge or a bridged spike will dominate everything downstream. Then confirm by eye that the rendered output has a visually distinct boundary at each of those vertices; the script checks the path, not the pixels. A smoothed kink or smoothed spike is a `criteria/geometry.md` violation (named failure modes there). Then check `criteria/geometry.md`, `criteria/color.md`, `criteria/gradients.md`, and `criteria/visual-fidelity.md`. Record every violation with the criterion file it failed and the region of the image it affects. Use this list both to drive fixes and to detect stalled progress later.
 4. **Batch-fix** every violation that is unambiguous and non-interacting. Two violations are non-interacting when fixing one does not visibly affect the other's region — e.g. a wrong color in region A and a faceted curve in region B. When violations share geometry (a control point near a corner that affects both the curve and the corner), fix one and re-check before fixing the other. Default to batching; fall back to one-at-a-time only when fixes visibly affect each other. Use the priority order in "What to Fix First" to decide what to fix first within an iteration and what to defer to a later iteration.
 5. **Re-render and re-check.**
 

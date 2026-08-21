@@ -26,7 +26,17 @@ Prefer reusable `View` or `Shape` for app use.
   - `Q` -> convert to cubic Bezier when needed
   - `Z` -> `closeSubpath()`
 - Preserve fills, strokes, opacity, line caps, line joins, and miter behavior where visually relevant.
-- Use `FillStyle(eoFill: true)` when needed for holes/counters.
+- Use `FillStyle(eoFill: true)` when needed for holes/counters. Put every
+  subpath in **one** `Path`: separate shapes each fill solid and paint over
+  the counter instead of cutting through it. Even-odd also means the hole
+  works whatever winding direction the trace produced, which is worth
+  having — vtracer's winding is not something to rely on.
+- Note the interaction with tinting. Rendering a `Shape` directly as a view
+  makes it take the ambient `foregroundStyle`, which is usually what you
+  want, but gives no way to choose a fill rule. A shape with counters needs
+  `.fill(.foreground, style: FillStyle(eoFill: true))` to get both — that
+  spelling requires iOS 17 / macOS 14, so on an older target either pass an
+  explicit colour or orient the hole's winding to suit a nonzero fill.
 - Use SwiftUI gradients only when the source/reviewed vector requires gradients.
 - Keep generated Swift code reusable and paste-ready.
 

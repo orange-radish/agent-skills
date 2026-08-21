@@ -34,6 +34,26 @@ thresholds live in the script's docstring — do not restate them here.
   commands meeting at the spike vertex — never a single Bézier across
   the tip.
 
+## Checking these mechanically
+
+`tools/verify-conformance.py` checks the four named failure modes below
+against the inventory, so they do not depend on catching them by eye:
+
+```sh
+python3 tools/verify-conformance.py inventory.json --svg reviewed.svg
+python3 tools/verify-conformance.py inventory.json --nodes authored.json [--normalized]
+```
+
+It reports missing nodes, missing kinks / smoothed spikes, and phantom
+notches, and exits non-zero if any are found. Run it on the reviewed SVG
+and again on each authored output — a stitch error can be introduced after
+the SVG is approved. Thresholds and their rationale are in the script's
+docstring.
+
+It is a floor, not a ceiling: it says nothing about silhouette, curve
+quality between vertices, or anything in `color.md`. A pass still needs the
+rendered comparison in `procedures/render-compare-iterate.md`.
+
 ## Traceability
 
 Every coordinate in the authored path must trace to one of:

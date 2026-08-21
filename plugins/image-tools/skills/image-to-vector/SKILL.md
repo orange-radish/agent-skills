@@ -108,6 +108,7 @@ Generate only the requested output formats from the reviewed SVG. Do not retrace
 
 For every requested output:
 
+- Re-run `tools/verify-conformance.py` on the authored output, not only on the reviewed SVG — the per-platform conversion is exactly where a corner or a spike tip gets dropped. Pass the output's own nodes with `--nodes` (add `--normalized` if they are 0..1). See `criteria/geometry.md`.
 - Render or preview it. For SwiftUI, follow `procedures/render-swiftui.md` and feed the result back into `procedures/render-compare-iterate.md`.
 - Compare it against the source raster, then against the reviewed SVG.
 - Fix conversion errors.
