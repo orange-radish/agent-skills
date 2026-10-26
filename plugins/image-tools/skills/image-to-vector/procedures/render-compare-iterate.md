@@ -21,7 +21,7 @@ Repeat until success or bailout (see "Bailout Conditions"):
    - difference image (from `magick compare`, see below)
    - zoom crops (`procedures/zoom-inspection.md`)
    - numerical pixel-diff metric
-3. **Check** the render against every applicable criterion. Start with **inventory conformance**, and run it rather than eyeballing it:
+3. **Check** the render against every applicable criterion. On the vector-source route there is no inventory, so skip the conformance run below and check the criteria against the source's own render. Otherwise, start with **inventory conformance**, and run it rather than eyeballing it:
 
    ```sh
    python3 tools/verify-conformance.py inventory.json --svg reviewed.svg
@@ -43,7 +43,46 @@ magick -background none -density 384 reviewed.svg -resize "${WIDTH}x${HEIGHT}" r
 
 For SwiftUI: see `procedures/render-swiftui.md`.
 
-For Android VectorDrawable: there is no convenient headless render. Either (a) load the XML in a small Compose preview and screenshot it, (b) export an equivalent SVG and render that as a proxy, or (c) document that direct rendering was not performed and rely on careful inspection plus consistency with the reviewed SVG.
+For Android VectorDrawable, use two renders. They have different jobs:
+
+- **Stand-in, for iterating.** Convert the XML with `tools/vd-to-svg.py`, then render that SVG with `rsvg-convert`. It is fast and fine inside the loop, but it is **not** the final check. SVG renderers and Android's renderer disagree on some path data: a full circle written as two 180° arcs renders correctly through the stand-in and wrong on Android. See "Android renderer pitfalls" in `outputs/android-vectordrawable.md`.
+
+  ```sh
+  python3 tools/vd-to-svg.py ic_mark.xml stand-in.svg [--color @color/brand=#FF6A00]
+  rsvg-convert -w "$WIDTH" -h "$HEIGHT" stand-in.svg -o rendered.png
+  ```
+
+- **Android's own renderer, required for the final check** whenever the project's tests already use Robolectric. Add a temporary test that draws each drawable to a PNG, run it, and delete it afterwards. Before you finish, `git status` must show no leftover test file.
+
+  ```kotlin
+  @RunWith(RobolectricTestRunner::class)
+  @GraphicsMode(GraphicsMode.Mode.NATIVE) // required, see below
+  class RenderVectorsForReview {
+      @Test fun render() {
+          val out = File("/abs/path/to/scratch/android-renders").apply { mkdirs() }
+          val res = RuntimeEnvironment.getApplication().resources
+          for ((name, id) in listOf("ic_mark" to R.drawable.ic_mark)) {
+              val d = res.getDrawable(id, null)
+              val bmp = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888)
+              d.setBounds(0, 0, WIDTH, HEIGHT)
+              d.draw(Canvas(bmp))
+              File(out, "$name.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
+          }
+      }
+  }
+  ```
+
+  ```sh
+  ./gradlew :<module>:testDebugUnitTest --tests '*RenderVectorsForReview'
+  ```
+
+  Put the test in the module that owns the drawables. `WIDTH` and `HEIGHT` are the reference image's pixel size.
+  - **`GraphicsMode.Mode.NATIVE` is mandatory** (Robolectric 4.10+). The default mode is no-ops and fakes: it renders nothing useful, and inflating a drawable accepts malformed path data without complaint.
+  - Resources must be visible to unit tests (`testOptions { unitTests { isIncludeAndroidResources = true } }`). If the project doesn't set this, ask before changing the build file.
+
+  If the project has no Robolectric, ask the user before adding it as a test dependency. Otherwise, use the stand-in, apply the pitfalls checklist by hand, and **state in the deliverable that Android's renderer was not run**, the same way `procedures/render-swiftui.md` handles a missing renderer.
+
+A screenshot of a Compose `@Preview` also uses Android's renderer. It needs the IDE, though, so the skill cannot run it unattended. Treat it as a fallback below the Robolectric capture.
 
 ## Diff Commands (one signal among many)
 
@@ -58,6 +97,18 @@ magick compare -metric PSNR source.png rendered.png /tmp/diff.png
 ```
 
 `/tmp/diff.png` is a difference image — useful as a comparison view in step 2. Examine where the differences cluster and check those regions against `criteria/geometry.md`, `criteria/color.md`, and `criteria/gradients.md`.
+
+### Coverage diff for single-color marks
+
+Plain `-metric AE` on RGBA is noisy for a mark that is tinted at the call site: the fill color is irrelevant, and antialiasing differences dominate. When both images have a transparent background, compare the alpha channels and count only pixels whose coverage differs by more than half:
+
+```sh
+magick reference.png -alpha extract ref-alpha.png
+magick rendered.png  -alpha extract out-alpha.png
+magick compare -metric AE -fuzz 50% ref-alpha.png out-alpha.png /tmp/alpha-diff.png
+```
+
+On one 512 px calibration set, a wrong mark scored about 84,000, the correct mark shifted by 2 px scored about 4,400, and an exact port scored 0. When the reference was rendered from the same vector source (see "Vector source route" in `SKILL.md`), 0 is achievable. Any nonzero cluster is worth a zoom crop. For a raster-traced mark, expect a small residue along edges. The metric is still one signal among the criteria, not the stopping rule.
 
 ## What to Fix First
 

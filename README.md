@@ -8,7 +8,7 @@ standard) that were built for projects at Orange Radish.
 
 | Skill | Plugin | Description |
 |---|---|---|
-| `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output. |
+| `image-to-vector` | `image-tools` | Convert a PNG/JPG icon, logo, or illustration into pixel- and color-accurate **SVG**, **SwiftUI**, or **Android VectorDrawable** output, or port existing vector source between those formats with render verification. |
 | `seo-audit`, `security-audit`, `link-audit` | `marketing` | Audit a live website across **SEO**, **AI-agent discoverability** (structured data / JSON-LD, GEO/AEO), **security headers + TLS**, and **link/redirect health**, and propose fixes. Crawls the rendered HTML once as ground truth; ships **Webflow**, **Squarespace**, **WordPress**, and **Wix** adapters. Triggered by `/marketing:site-audit`. |
 
 ## External dependencies
