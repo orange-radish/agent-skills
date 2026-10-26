@@ -1,6 +1,6 @@
 ---
 name: image-to-vector
-description: Convert a raster image (PNG, JPG) into a pixel and color accurate vector format. Supports output in SVG, SwiftUI, and Android VectorDrawable XML. Use when the user wants to convert a PNG or JPG icon, logo, or illustration to SVG, SwiftUI Shape/Path/View, or Android VectorDrawable XML.
+description: Convert a raster image (PNG, JPG) into a pixel and color accurate vector format, or port existing vector source (SVG, SwiftUI Path/Shape code, path tables) between formats with render verification. Supports output in SVG, SwiftUI, and Android VectorDrawable XML. Use when the user wants to convert a PNG or JPG icon, logo, or illustration to SVG, SwiftUI Shape/Path/View, or Android VectorDrawable XML, or to port a vector mark from one of those platforms to another. Do not use for general raster image editing, photo vectorization for artistic effect, or icon-font generation.
 user-invocable: true
 allowed-tools:
   - Read
@@ -29,7 +29,7 @@ The biggest failure mode for this task is **failing to match the rules in `crite
 
 Coordinates with no traceable source are a geometry failure — see `criteria/geometry.md`. Do not estimate coordinates from a render or screenshot.
 
-If the user has provided an original SVG, design source HTML, generator script, or design-handoff file, look there first. The path data in the source is canonical; vtracer and `inspect-outline.py` are how you recover structure when only a raster exists.
+If the user has provided an original SVG, design source HTML, generator script, or design-handoff file, look there first. The path data in the source is canonical; vtracer and `inspect-outline.py` are how you recover structure when only a raster exists. When vector source exists, take the vector-source route below. Tracing a raster of it would throw away exact geometry.
 
 **Visual-effects caveat.** Glow, drop shadow, blur, and colored halos obscure the underlying geometry. `procedures/inspect-source.md` strips them and reports what was detected. Do not trace from the effect envelope.
 
@@ -52,7 +52,7 @@ install commands.
 
 Required:
 
-- source PNG or JPEG
+- source PNG or JPEG, **or** vector source (SVG, SwiftUI `Path`/`Shape` code, normalized path tables, a generator script)
 - requested output format(s): SVG, SwiftUI, and/or Android VectorDrawable
 
 Optional:
@@ -66,7 +66,16 @@ Optional:
 - `max_iterations` - hard upper bound on the iterate loop, where one iteration is a full render -> check -> batch-fix -> re-render cycle (not a single fix). Default `8`.
 - `stall_threshold` - bail out if the count of unresolved violations does not decrease for this many consecutive iterations. Default `2`.
 
-## Workflow
+## Vector Source Route
+
+Use this route when the mark already exists as vector geometry and the task is to port it to another format, for example SwiftUI code to Android VectorDrawable. Steps 1–3 below exist to recover geometry from a raster; with vector source there is nothing to recover.
+
+1. **Port the source geometry directly.** Every number comes from the source, so the traceability rule is satisfied automatically. For SwiftUI sources, follow `procedures/port-from-swiftui.md`, preferably by dumping SwiftUI's resolved path. For an SVG source going to Android, use `tools/svg-to-vd.py`.
+2. **Render the source with its own renderer** to make the reference image. For SwiftUI that's `procedures/render-swiftui.md`, and for SVG it's `rsvg-convert`. A raster the user supplies is useful context. The source's own render is the reference, because it shows exactly what the source draws.
+3. **Skip** the inventory, the segment plan, vtracer, and `tools/verify-conformance.py`. There is no inventory to check against.
+4. **Keep** steps 4–6 below as written: the criteria, the render comparison against the reference, and the platform's own renderer for the final check. Reading ported code caught none of the real bugs on a previous port; the render comparison caught all of them. For single-color marks, use the coverage diff in `procedures/render-compare-iterate.md`. An exact port can reach 0 differing pixels.
+
+## Workflow (raster source)
 
 ### 1. Inspect the source
 
@@ -102,15 +111,15 @@ Generate only the requested output formats from the reviewed SVG. Do not retrace
 
 - For SVG: follow `outputs/svg.md`.
 - For SwiftUI: follow `outputs/swiftui.md`.
-- For Android VectorDrawable: follow `outputs/android-vectordrawable.md`.
+- For Android VectorDrawable: follow `outputs/android-vectordrawable.md`. `tools/svg-to-vd.py` converts the reviewed SVG mechanically.
 
 ### 6. Validate each generated output
 
 For every requested output:
 
-- Re-run `tools/verify-conformance.py` on the authored output, not only on the reviewed SVG — the per-platform conversion is exactly where a corner or a spike tip gets dropped. Pass the output's own nodes with `--nodes` (add `--normalized` if they are 0..1). See `criteria/geometry.md`.
-- Render or preview it. For SwiftUI, follow `procedures/render-swiftui.md` and feed the result back into `procedures/render-compare-iterate.md`.
-- Compare it against the source raster, then against the reviewed SVG.
+- Raster route only: re-run `tools/verify-conformance.py` on the authored output, not only on the reviewed SVG — the per-platform conversion is exactly where a corner or a spike tip gets dropped. Pass the output's own nodes with `--nodes` (add `--normalized` if they are 0..1). See `criteria/geometry.md`.
+- Render it with the target platform's own renderer. For SwiftUI, follow `procedures/render-swiftui.md`. For Android VectorDrawable, the `vd-to-svg.py` stand-in is only for iterating. The final check is the Robolectric capture in `procedures/render-compare-iterate.md`, or a stated limitation when that capture is unavailable. Feed the result back into `procedures/render-compare-iterate.md`.
+- Compare it against the source raster (on the vector-source route, the source's own render), then against the reviewed SVG if there is one.
 - Fix conversion errors.
 - Document unavoidable approximations.
 - If the validation loop bails out, follow the Bailout Reporting format in `procedures/render-compare-iterate.md` and surface the partial result to the user.
